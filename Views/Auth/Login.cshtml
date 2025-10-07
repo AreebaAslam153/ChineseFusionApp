@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<h2 class="text-center mb-4">Login</h2>
+
+<form method="post" action="/Auth/Login" class="w-50 mx-auto">
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" name="Email" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="Password" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Login</button>
+</form>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-info text-center mt-3">@ViewBag.Message</div>
+}

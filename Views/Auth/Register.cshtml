@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Register";
+}
+
+<h2 class="text-center mb-4">Register</h2>
+
+<form method="post" action="/Auth/Register" class="w-50 mx-auto">
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input type="text" name="name" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-success w-100">Register</button>
+</form>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-info text-center mt-3">@ViewBag.Message</div>
+}
+@if (ViewBag.ShowLoginButton == true)
+{
+    <div class="text-center mt-3">
+        <a href="/Auth/Login" class="btn btn-primary">Go to Login</a>
+    </div>
+}
