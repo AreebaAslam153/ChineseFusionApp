@@ -6,6 +6,4 @@ obj/
 *.suo
 *.userosscache
 *.sln.docstates
-
-# Sensitive files
 serviceAccount.json

@@ -74,7 +74,14 @@ namespace ChineseFusionApp.Controllers
         public IActionResult Login(string email, string password)
         {
             ViewBag.Message = $"Login attempted for {email}";
+            HttpContext.Session.SetString("UserEmail", email);
+            return RedirectToAction("Dashboard", "Home");
             return View();
+        }
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Auth");
         }
     }
 }

@@ -3,6 +3,7 @@ using FirebaseAdmin;
 using FirebaseAdmin.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSession();
 
 // ✅ Add Firebase Admin initialization (only ONCE)
 var serviceAccountPath = Path.Combine(Directory.GetCurrentDirectory(), "serviceAccount.json");
@@ -31,6 +32,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
