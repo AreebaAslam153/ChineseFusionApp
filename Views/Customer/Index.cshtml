@@ -1,0 +1,40 @@
+﻿@model IEnumerable<ChineseFusionApp.Controllers.Customer>
+
+@{
+    ViewData["Title"] = "Customer Details";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Registered Customers</h2>
+
+    <table class="table table-bordered table-striped text-center shadow">
+        <thead class="table-dark">
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Registered At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.Name</td>
+                        <td>@user.Email</td>
+                        <td>@user.CreatedAt</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4">No customers found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

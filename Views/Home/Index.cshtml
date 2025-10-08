@@ -1,7 +1,44 @@
 ﻿@{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Admin Home";
 }
-<div class="text-center">
-    <h1>Welcome to Chinese Fusion</h1>
-    <p class="lead">Taste the best of Chinese cuisine!</p>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4 fw-bold">Welcome, Admin 👋</h2>
+    <p class="text-center text-muted">Here’s a quick overview of our restaurant’s performance.</p>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger text-center">@ViewBag.Error</div>
+    }
+
+    <!-- Dashboard Summary Cards -->
+    <div class="row text-center mt-4">
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm p-4 border-0 bg-danger text-white">
+                <h5>Total Orders</h5>
+                <h3>@ViewBag.TotalOrders</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm p-4 border-0 bg-success text-white">
+                <h5>Customers</h5>
+                <h3>@ViewBag.TotalCustomers</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm p-4 border-0 bg-warning text-white">
+                <h5>Menu Items</h5>
+                <h3>@ViewBag.TotalMenuItems</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm p-4 border-0 bg-primary text-white">
+                <h5>Pending Payments</h5>
+                <h3>@ViewBag.PendingPayments</h3>
+            </div>
+        </div>
+    </div>
 </div>

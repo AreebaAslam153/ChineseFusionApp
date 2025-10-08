@@ -1,0 +1,37 @@
+﻿@model IEnumerable<ChineseFusionApp.Controllers.FoodItem>
+
+@{
+    ViewData["Title"] = "Manage Menu";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Manage Menu</h2>
+
+    <div class="text-end mb-3">
+        <a href="/Food/Add" class="btn btn-primary">Add New Item</a>
+    </div>
+
+    <table class="table table-bordered text-center align-middle shadow">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price (Rs)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Category</td>
+                    <td>@item.Price</td>
+                    <td>
+                        <a href="/Food/Delete?id=@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
