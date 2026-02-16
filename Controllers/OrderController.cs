@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Firebase.Database;
 using Firebase.Database.Query;
-using System.Threading.Tasks;
+using ChineseFusionApp.Models;
 
 namespace ChineseFusionApp.Controllers
 {
@@ -11,52 +11,44 @@ namespace ChineseFusionApp.Controllers
 
         public OrderController()
         {
-            _firebaseClient = new FirebaseClient("https://chinesefusionapp-default-rtdb.firebaseio.com/");
+            _firebaseClient = new FirebaseClient(
+                "https://chinesefusionapp-default-rtdb.firebaseio.com/");
         }
 
-        // ✅ Display all orders
+        // 🔹 DISPLAY ORDERS (ADMIN)
         public async Task<IActionResult> Index()
         {
-            var orders = await _firebaseClient
-                .Child("Orders")
-                .OnceAsync<Order>();
+            var orders = await _firebaseClient.Child("Orders").OnceAsync<Order>();
+            var customers = await _firebaseClient.Child("Customers").OnceAsync<Customer>();
 
-            var orderList = orders.Select(o => new Order
+            var customerMap = customers.ToDictionary(c => c.Key, c => c.Object);
+
+            var result = orders.Select(o =>
             {
-                Id = o.Key,
-                CustomerName = o.Object.CustomerName,
-                FoodItem = o.Object.FoodItem,
-                Quantity = o.Object.Quantity,
-                TotalPrice = o.Object.TotalPrice,
-                Status = o.Object.Status,
-                OrderDate = o.Object.OrderDate
+                customerMap.TryGetValue(o.Object.CustomerId, out var cust);
+
+                return new OrderViewModel
+                {
+                    OrderId = o.Key,
+                    CustomerName = cust?.Name ?? "Unknown",
+                    CustomerEmail = cust?.Email ?? "N/A",
+                    Items = o.Object.Items,
+                    TotalAmount = o.Object.TotalAmount,
+                    Status = o.Object.Status
+                };
             }).ToList();
 
-            return View(orderList);
+            return View(result);
         }
 
-        // ✅ Update order status (optional feature)
-        [HttpPost]
+        // 🔹 UPDATE ORDER STATUS
         public async Task<IActionResult> UpdateStatus(string id, string status)
         {
-            await _firebaseClient
-                .Child("Orders")
-                .Child(id)
-                .PatchAsync(new { Status = status });
+            var order = await _firebaseClient.Child("Orders").Child(id).OnceSingleAsync<Order>();
+            order.Status = status;
 
+            await _firebaseClient.Child("Orders").Child(id).PutAsync(order);
             return RedirectToAction("Index");
         }
-    }
-
-    // ✅ Model
-    public class Order
-    {
-        public string? Id { get; set; }
-        public string? CustomerName { get; set; }
-        public string? FoodItem { get; set; }
-        public int Quantity { get; set; }
-        public double TotalPrice { get; set; }
-        public string? Status { get; set; }
-        public string? OrderDate { get; set; }
     }
 }

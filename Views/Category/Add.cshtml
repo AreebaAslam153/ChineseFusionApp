@@ -1,0 +1,25 @@
+﻿@model ChineseFusionApp.Models.Category
+
+<div class="container mt-5">
+    <h3>Add Category</h3>
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label>Category Name</label>
+            <input asp-for="Name" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label>Description</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label>Category Image</label>
+            <input type="file" name="imageFile" class="form-control" required />
+        </div>
+
+        <button class="btn btn-success">Save Category</button>
+        <a href="/Food/AddChoice" class="btn btn-secondary">Back</a>
+    </form>
+</div>

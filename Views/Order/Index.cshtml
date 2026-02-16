@@ -1,56 +1,53 @@
-﻿@model IEnumerable<ChineseFusionApp.Controllers.Order>
-
-@{
-    ViewData["Title"] = "Manage Orders";
-}
+﻿@model IEnumerable<ChineseFusionApp.Models.OrderViewModel>
 
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Manage Orders</h2>
+    <h2 class="text-center mb-4">Customer Orders</h2>
 
-    <table class="table table-bordered table-striped text-center shadow">
+    <table class="table table-bordered shadow">
         <thead class="table-dark">
             <tr>
-                <th>Order ID</th>
                 <th>Customer</th>
-                <th>Food Item</th>
-                <th>Quantity</th>
-                <th>Total Price (PKR)</th>
+                <th>Email</th>
+                <th>Items</th>
+                <th>Total (Rs)</th>
                 <th>Status</th>
-                <th>Order Date</th>
                 <th>Action</th>
             </tr>
         </thead>
+
         <tbody>
-            @if (Model != null && Model.Any())
-            {
-                foreach (var order in Model)
-                {
-                    <tr>
-                        <td>@order.Id</td>
-                        <td>@order.CustomerName</td>
-                        <td>@order.FoodItem</td>
-                        <td>@order.Quantity</td>
-                        <td>@order.TotalPrice</td>
-                        <td>
-                            <form method="post" asp-action="UpdateStatus" asp-controller="Order">
-                                <input type="hidden" name="id" value="@order.Id" />
-                                <select name="status" class="form-select form-select-sm w-auto d-inline">
-                                    <option value="Pending" selected="@("Pending" == order.Status)">Pending</option>
-                                    <option value="In Progress" selected="@("In Progress" == order.Status)">In Progress</option>
-                                    <option value="Delivered" selected="@("Delivered" == order.Status)">Delivered</option>
-                                </select>
-                                <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                            </form>
-                        </td>
-                        <td>@order.OrderDate</td>
-                        <td><button class="btn btn-danger btn-sm">Delete</button></td>
-                    </tr>
-                }
-            }
-            else
+            @foreach (var order in Model)
             {
                 <tr>
-                    <td colspan="8">No orders found.</td>
+                    <td>@order.CustomerName</td>
+                    <td>@order.CustomerEmail</td>
+
+                    <td>
+                        @foreach (var item in order.Items)
+                        {
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="@item.ImageUrl" width="80" />
+                                     style="object-fit:cover;border-radius:5px" />
+                                <span class="ms-2">
+                                    @item.Name × @item.Quantity
+                                </span>
+                            </div>
+                        }
+                    </td>
+
+                    <td>@order.TotalAmount</td>
+
+                    <td>
+                        <span class="badge bg-warning">@order.Status</span>
+                    </td>
+
+                    <td>
+                        <a href="/Order/UpdateStatus?id=@order.OrderId&status=Accepted"
+                           class="btn btn-success btn-sm">Accept</a>
+
+                        <a href="/Order/UpdateStatus?id=@order.OrderId&status=Delivered"
+                           class="btn btn-primary btn-sm">Delivered</a>
+                    </td>
                 </tr>
             }
         </tbody>

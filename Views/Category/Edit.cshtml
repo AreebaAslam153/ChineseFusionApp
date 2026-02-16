@@ -1,0 +1,35 @@
+﻿@model ChineseFusionApp.Models.Category
+
+<div class="container mt-5">
+    <h3>Edit Category</h3>
+
+    <form method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label>Category Name</label>
+            <input asp-for="Name" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label>Description</label>
+            <input asp-for="Description" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Change Image (optional)</label>
+            <input type="file" name="imageFile" class="form-control" />
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <div class="mb-3">
+                <img src="@Model.ImageUrl" width="120"
+                     style="border-radius:6px" />
+            </div>
+        }
+
+        <button class="btn btn-success">Update</button>
+        <a href="/Food/Index" class="btn btn-secondary">Back</a>
+    </form>
+</div>

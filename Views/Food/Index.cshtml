@@ -1,19 +1,52 @@
-﻿@model IEnumerable<ChineseFusionApp.Controllers.FoodItem>
-
-@{
-    ViewData["Title"] = "Manage Menu";
-}
+﻿@model IEnumerable<ChineseFusionApp.Models.FoodItem>
+@using ChineseFusionApp.Models
 
 <div class="container mt-5">
     <h2 class="text-center mb-4">Manage Menu</h2>
 
-    <div class="text-end mb-3">
-        <a href="/Food/Add" class="btn btn-primary">Add New Item</a>
+    <div class="d-flex justify-content-between mb-3">
+        <a href="/Food/AddChoice" class="btn btn-primary">Add</a>
+        <button id="showCategoriesBtn" class="btn btn-info">Display Categories</button>
     </div>
 
-    <table class="table table-bordered text-center align-middle shadow">
+    <!-- 🔹 CATEGORY TABLE -->
+    <div id="categoryTableContainer" style="display:none;">
+        <h4>Categories</h4>
+        <table class="table table-bordered text-center align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cat in ViewBag.Categories as List<Category>)
+                {
+                    <tr>
+                        <td>
+                            <img src="@cat.ImageUrl" width="70" height="50" style="object-fit:cover" />
+                        </td>
+                        <td>@cat.Name</td>
+                        <td>@cat.Description</td>
+                        <td>
+                            <a href="/Category/Edit?id=@cat.Id" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="/Category/Delete?id=@cat.Id"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('Delete this category?')">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 🔹 FOOD TABLE -->
+    <table class="table table-bordered text-center align-middle mt-4">
         <thead class="table-dark">
             <tr>
+                <th>Image</th>
                 <th>Name</th>
                 <th>Category</th>
                 <th>Price (Rs)</th>
@@ -24,14 +57,27 @@
             @foreach (var item in Model)
             {
                 <tr>
+                    <td>
+                        <img src="@item.ImageUrl" width="70" height="50" style="object-fit:cover" />
+                    </td>
                     <td>@item.Name</td>
                     <td>@item.Category</td>
                     <td>@item.Price</td>
                     <td>
-                        <a href="/Food/Delete?id=@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                        <a href="/Food/Edit?id=@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="/Food/Delete?id=@item.Id"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Delete this item?')">Delete</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+<script>
+    document.getElementById("showCategoriesBtn").onclick = function () {
+        var div = document.getElementById("categoryTableContainer");
+        div.style.display = div.style.display === "none" ? "block" : "none";
+    };
+</script>

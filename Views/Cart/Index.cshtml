@@ -1,0 +1,35 @@
+﻿@model List<ChineseFusionApp.Models.CartItem>
+
+<h2> Cart</h2>
+
+@if (!Model.Any())
+{
+    <p>Cart is empty</p>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Total</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><img src="@item.ImageUrl" width="80" /></td>
+                <td>@item.Name</td>
+                <td>@item.Price</td>
+                <td>@item.Quantity</td>
+                <td>@(item.Price * item.Quantity)</td>
+            </tr>
+        }
+    </table>
+
+    <a asp-action="PlaceOrder" class="btn btn-success">
+        Place Order
+    </a>
+}

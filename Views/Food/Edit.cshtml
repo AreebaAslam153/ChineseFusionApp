@@ -6,9 +6,11 @@
 }
 
 <div class="container mt-5">
-    <h3>Add Food Item</h3>
+    <h3>Edit Food Item</h3>
 
     <form method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+
         <div class="mb-3">
             <label>Food Name</label>
             <input asp-for="Name" class="form-control" required />
@@ -17,10 +19,11 @@
         <div class="mb-3">
             <label>Category</label>
             <select asp-for="Category" class="form-control" required>
-                <option value="">-- Select Category --</option>
                 @foreach (var c in categories)
                 {
-                    <option value="@c.Name">@c.Name</option>
+                    <option value="@c.Name" selected="@(c.Name == Model.Category)">
+                        @c.Name
+                    </option>
                 }
             </select>
         </div>
@@ -31,11 +34,12 @@
         </div>
 
         <div class="mb-3">
-            <label>Food Image</label>
-            <input type="file" name="imageFile" class="form-control" required />
+            <label>Change Image (optional)</label><br />
+            <img src="@Model.ImageUrl" width="120" class="mb-2" />
+            <input type="file" name="imageFile" class="form-control" />
         </div>
 
-        <button type="submit" class="btn btn-success">Save</button>
+        <button type="submit" class="btn btn-success">Update</button>
         <a href="/Food/Index" class="btn btn-secondary">Back</a>
     </form>
 </div>

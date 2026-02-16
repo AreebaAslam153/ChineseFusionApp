@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Firebase.Database;
 using Firebase.Database.Query;
-using System.Threading.Tasks;
+using ChineseFusionApp.Models;
 
 namespace ChineseFusionApp.Controllers
 {
@@ -11,34 +11,27 @@ namespace ChineseFusionApp.Controllers
 
         public CustomerController()
         {
-            _firebaseClient = new FirebaseClient("https://chinesefusionapp-default-rtdb.firebaseio.com/");
+            _firebaseClient = new FirebaseClient(
+                "https://chinesefusionapp-default-rtdb.firebaseio.com/");
         }
 
-        // ✅ Fetch and display all registered customers
         public async Task<IActionResult> Index()
         {
             var users = await _firebaseClient
-                .Child("Users")
+                .Child("Customers")
                 .OnceAsync<Customer>();
 
             var customerList = users.Select(u => new Customer
             {
                 Id = u.Key,
                 Name = u.Object.Name,
+                Phone = u.Object.Phone,
+                Address = u.Object.Address,
                 Email = u.Object.Email,
                 CreatedAt = u.Object.CreatedAt
             }).ToList();
 
             return View(customerList);
         }
-    }
-
-    // ✅ Model for customers
-    public class Customer
-    {
-        public string? Id { get; set; }
-        public string? Name { get; set; }
-        public string? Email { get; set; }
-        public string? CreatedAt { get; set; }
     }
 }
